@@ -4,20 +4,17 @@ on:
   push:
     branches:
       - master
-
   schedule:
-    - cron: "*/2 * * * *"   # Har 02 minute me run karega (optional)
+    - cron: "*/2 * * * *"
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-      # 1️⃣ Checkout Automation Framework Repo
       - name: Checkout Automation Repository
         uses: actions/checkout@v4
 
-      # 2️⃣ Setup Java 17
       - name: Set up JDK 17
         uses: actions/setup-java@v4
         with:
@@ -25,26 +22,22 @@ jobs:
           distribution: 'temurin'
           cache: maven
 
-      # 3️⃣ Setup Node.js (Backend ke liye)
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '22'
 
-      # 4️⃣ Clone Backend Repository
-- name: Clone Backend Repository
-  run: |
-    git clone https://x-access-token:${{ secrets.PAT_TOKEN }}@github.com/Dipak19Aug/SmartDepositAPI.git
-    cd SmartDepositAPI
-    npm install
+      - name: Clone Backend Repository
+        run: |
+          git clone https://github.com/Dipak19Aug/SmartDepositAPI.git
+          cd SmartDepositAPI
+          npm install
 
-      # 5️⃣ Start Backend Server
       - name: Start Backend Server
         run: |
           cd SmartDepositAPI
           nohup node app.js &
           sleep 15
 
-      # 6️⃣ Run Maven Tests
       - name: Run Automation Tests
         run: mvn -B clean test
