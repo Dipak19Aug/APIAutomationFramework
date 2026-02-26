@@ -34,7 +34,7 @@ jobs:
       # 4️⃣ Clone Backend Repository
 - name: Clone Backend Repository
   run: |
-    git clone https://x-access-token:${{ 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 }}@github.com/Dipak19Aug/SmartDepositAPI.git
+    git clone https://x-access-token:${{ secrets.PAT_TOKEN }}@github.com/Dipak19Aug/SmartDepositAPI.git
     cd SmartDepositAPI
     npm install
 
