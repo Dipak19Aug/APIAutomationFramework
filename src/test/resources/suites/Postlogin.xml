@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<suite name="PostLoginSuite">
+
+    <listeners>
+        <listener class-name="com.api.listeners.TestListener"/>
+    </listeners>
+
+    <test name="PostLoginFlow">
+
+        <groups>
+            <run>
+                <include name="postLogin"/>
+            </run>
+        </groups>
+
+        <classes>
+            <class name="com.api.Tests.LoginTest"/>
+            <class name="com.api.Tests.CreateFDTest"/>
+            <class name="com.api.Tests.GetFDDetails"/>
+            <class name="com.api.Tests.GetFDListTest"/>
+            <class name="com.api.Tests.DeleteFDTest"/>
+        </classes>
+
+    </test>
+
+</suite>

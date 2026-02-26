@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<suite name="E2ESuite">
+
+ <!-- 🔥 Listener YAHAN add hoga -->
+    <listeners>
+        <listener class-name="com.api.listeners.TestListener"/>
+    </listeners>
+
+    <test name="CompleteFlow">
+
+        <groups>
+            <run>
+                <include name="e2e"/>
+            </run>
+        </groups>
+
+        <classes>
+            <class name="com.api.Tests.RegisterTestFinal"/>
+            <class name="com.api.Tests.CreatePwdTest"/>
+            <class name="com.api.Tests.LoginTest"/>
+            <class name="com.api.Tests.CreateFDTest"/>
+            <class name="com.api.Tests.GetFDDetails"/>
+            <class name="com.api.Tests.GetFDListTest"/>
+            <class name="com.api.Tests.DeleteFDTest"/>
+        </classes>
+
+    </test>
+
+</suite>
+        

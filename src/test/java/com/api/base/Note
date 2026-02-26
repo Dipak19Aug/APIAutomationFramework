@@ -1,0 +1,137 @@
+Bhai 😄 — tumhara framework clean hai, lekin ek hidden design problem hai jo beginner ko nahi dikhti, par senior automation engineer turant pakad leta hai.
+
+Main simple language mein samjhata hoon 👇
+
+⚠️ 🔥 Hidden Problem — Shared RequestSpecification State
+
+Tumhara code:
+
+private RequestSpecification requestSpecification;
+
+
+aur constructor:
+
+requestSpecification = given().baseUri(BASE_URL);
+
+
+Phir tum har POST mein same object reuse kar rahe ho:
+
+requestSpecification
+        .contentType(JSON)
+        .body(payload)
+        .post(endpoint);
+
+❌ Problem Actual Mein Kya Hai?
+
+👉 RequestSpecification mutable object hai.
+
+Matlab:
+
+Aaj tumne:
+
+.contentType(JSON)
+.body(registerPayload)
+
+
+lagaya.
+
+Kal kisi aur API mein:
+
+.header("Authorization", token)
+
+
+add kiya.
+
+Toh:
+
+💥 Same object mein sab settings mix ho sakti hain.
+
+😨 Real Issue Kab Aata Hai?
+1️⃣ Parallel Execution (TestNG parallel run)
+
+Agar 2 tests same time run hue:
+
+Test A → register body set
+Test B → login body set
+
+
+Toh kabhi-kabhi:
+
+🚨 Wrong payload wrong API mein chala jata hai.
+
+Isko bolte hain:
+
+👉 State Leakage
+👉 Flaky Tests
+
+Senior log isi wajah se frameworks redesign karte hain.
+
+2️⃣ Headers Stick Ho Jaate Hain
+
+Example:
+
+Auth API → Authorization header add kiya
+
+
+Next API:
+
+Register API → Authorization nahi chahiye
+
+
+Par header already object mein hai 😅
+
+🧠 Senior Level Solution (Best Practice)
+
+Har request pe fresh specification banao.
+
+Instead of:
+
+requestSpecification.contentType(...).body(...)
+
+
+Better approach:
+
+protected Response postRequest(Object payload, String endpoint) {
+    return given()
+            .baseUri(BASE_URL)
+            .contentType(ContentType.JSON)
+            .body(payload)
+            .post(endpoint);
+}
+
+🔥 Difference Samjho
+❌ Current Approach
+One RequestSpecification reused everywhere
+
+
+Risk:
+
+State leak
+
+Parallel issues
+
+Debug nightmare
+
+✅ Senior Approach
+New RequestSpecification per request
+
+
+Benefits:
+
+✔ Thread safe
+✔ Clean request
+✔ No leftover headers/body
+✔ Stable automation
+
+🎯 Interview Gold Line
+
+Agar interviewer puche:
+
+👉 Why avoid shared RequestSpecification?
+
+Tum bolna:
+
+RequestSpecification is mutable, so reusing it can cause state leakage between tests.
+Creating a fresh request per call ensures thread safety and avoids flaky behavior during parallel execution.
+
+🔥 Senior-level answer.
