@@ -32,11 +32,11 @@ jobs:
           node-version: '22'
 
       # 4️⃣ Clone Backend Repository
-      - name: Clone Backend Repository
-        run: |
-          git clone https://github.com/Dipak19Aug/SmartDepositAPI.git
-          cd SmartDepositAPI
-          npm install
+- name: Clone Backend Repository
+  run: |
+    git clone https://x-access-token:${{ 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 }}@github.com/Dipak19Aug/SmartDepositAPI.git
+    cd SmartDepositAPI
+    npm install
 
       # 5️⃣ Start Backend Server
       - name: Start Backend Server
