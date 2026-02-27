@@ -7,19 +7,61 @@ on:
     branches: [ "master" ]
 
 jobs:
-  build:
-
+  test:
     runs-on: ubuntu-latest
 
+    services:
+      # ✅ MySQL running inside GitHub VM (Laptop dependency हट गया)
+      mysql:
+        image: mysql:8
+        env:
+          MYSQL_ROOT_PASSWORD: Dipak@123
+          MYSQL_DATABASE: banking
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping --silent"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+
     steps:
-    - uses: actions/checkout@v4
-    - name: Set up JDK 17
-      uses: actions/setup-java@v4
-      with:
-        java-version: '17'
-        distribution: 'temurin'
-        cache: maven
-    - name: Execute tests
-      run: mvn clean test -DsuiteXmlFile=suite.xml
+      # ✅ Checkout Code
+      - uses: actions/checkout@v4
 
+      # ✅ Setup Java
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: maven
 
+      # ✅ Setup Node (अगर backend Node है)
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      # ✅ Install Dependencies
+      - name: Install Dependencies
+        run: |
+          npm install
+          mvn clean install -DskipTests
+
+      # ✅ Start Backend inside Pipeline
+      - name: Start Backend
+        run: |
+          nohup node app.js &
+          sleep 15
+
+      # ✅ Run Tests
+      - name: Execute Tests
+        run: mvn clean test -DsuiteXmlFile=suite.xml
+
+      # ✅ Upload Test Report
+      - name: Upload Test Report
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-report
+          path: target/surefire-reports/
