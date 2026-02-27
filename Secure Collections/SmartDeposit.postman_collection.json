@@ -1,0 +1,212 @@
+{
+	"info": {
+		"_postman_id": "ac30f6b0-81e1-46f7-83f5-d630b8b478f1",
+		"name": "Banking API Collection",
+		"description": "Collection for User and FD APIs",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "11214131",
+		"_collection_link": "https://blue-sunset-346073.postman.co/workspace/Reqres.in~12f604b5-f94b-40b1-833d-8f4c5116bc48/collection/11214131-ac30f6b0-81e1-46f7-83f5-d630b8b478f1?action=share&source=collection_link&creator=11214131"
+	},
+	"item": [
+		{
+			"name": "User Register",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"firstname\": \"Gitanjali\",\n  \"username\": \"Gitanjali321\",\n  \"middleName\": \"Vishnu\",\n  \"sirname\": \"Chaure\",\n  \"pan\": \"VBCDE1234F\",\n  \"aadhaar\": \"223412341238\",\n  \"mobile\": \"99765432173\",\n  \"dob\": \"1983-05-11\",\n  \"gender\": \"female\",\n  \"password\": \"Gita@123\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/users/register",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"users",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "User Login",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"username\": \"dipak123\",\n  \"password\": \"Dipak@123\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/users/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"users",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "FD Create",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI5MjE0MjIwMjEiLCJ1c2VybmFtZSI6IlNtYXJ0R2l0YTMyMSIsImlhdCI6MTc2NDkxOTY1MiwiZXhwIjoxNzY0OTIzMjUyfQ.lK8JnIVXdAfTtZoMrKVquSTElMg7YiGvxQlLH6eItFM",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  //\"userId\": 924876398,\n  \"depositType\": \"Fixed\",\n  \"amount\": 50500,\n  \"durationMonths\": 12,\n  \"nominee_firstname\": \"Runali\",\n  \"nominee_lastname\": \"Ghadge\",\n  \"nominee_address\": \"pune\",\n  \"nominee_relationship\": \"wife\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/deposits/create",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"deposits",
+						"create"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "FD Details",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI5MjE0MjIwMjEiLCJ1c2VybmFtZSI6IlNtYXJ0R2l0YTMyMSIsImlhdCI6MTc2NDkxOTAzMSwiZXhwIjoxNzY0OTIyNjMxfQ.ZylzimJgGhJOiJuel0KFJJizUeFs8CRqzKR1U-XvfSU",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"fdId\": 523321567075\n}"
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/deposits/details",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"deposits",
+						"details"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "FD List by User",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI5MjE0MjIwMjEiLCJ1c2VybmFtZSI6IlNtYXJ0R2l0YTMyMSIsImlhdCI6MTc2NDkxOTY1MiwiZXhwIjoxNzY0OTIzMjUyfQ.lK8JnIVXdAfTtZoMrKVquSTElMg7YiGvxQlLH6eItFM",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/deposits/list",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"deposits",
+						"list"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "FD Delete",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI5MjQ4NzYzOTgiLCJ1c2VybmFtZSI6IkdhdXJhdjMyMSIsImlhdCI6MTc2NDc5NDQ5OCwiZXhwIjoxNzY0Nzk4MDk4fQ.RX1Q1YuldL7JNzGghJT0k36PIC3PwhoENDMs-ERvS4w",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"fdId\": 524915193096\n  //\"userId\": 924876398\n}"
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/deposits/delete",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"deposits",
+						"delete"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

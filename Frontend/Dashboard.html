@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Dashboard</title>
+  <link rel="stylesheet" href="assets/style.css">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      background-image: url('images/Dashboard.webp');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      color: #fff;
+      text-align: center;
+    }
+
+    /* ✅ Floating logout button — top-right corner */
+    .logout-btn {
+      position: fixed;
+      top: 12px;
+      right: 12px;
+      z-index: 9999;
+      background-color: #dc3545;
+      color: white;
+      border: none;
+      padding: 6px 12px;
+      font-size: 13px;
+      border-radius: 4px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+      font-weight: bold;
+    }
+    .logout-btn:hover { background-color: #b02a37; }
+
+    .flash-message {
+      margin-top: 80px;
+      font-size: 24px;
+      font-weight: bold;
+      background-color: rgba(0,0,0,0.6);
+      padding: 20px;
+      border-radius: 8px;
+      display: none; /* hidden by default */
+      animation: fadeOut 3s forwards;
+    }
+
+    @keyframes fadeOut {
+      0% { opacity: 1; }
+      80% { opacity: 1; }
+      100% { opacity: 0; visibility: hidden; }
+    }
+
+    .dashboard-panel {
+      margin-top: 40px;
+      background-color: rgba(255,255,255,0.9);
+      padding: 20px;
+      border-radius: 10px;
+      display: inline-block;
+    }
+
+    .dashboard-panel button {
+      display: block;
+      width: 200px;
+      margin: 12px auto;
+      padding: 12px;
+      font-size: 16px;
+      font-weight: bold;
+      border: none;
+      border-radius: 6px;
+      background-color: #007bff;
+      color: #fff;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    .dashboard-panel button:hover { background-color: #0056b3; }
+  </style>
+</head>
+<body>
+  <!-- ✅ Floating Logout Button -->
+  <button class="logout-btn" onclick="window.location.href='Register&Login.html'">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+      <path d="M16 17l5-5-5-5M21 12H9M13 21H5a2 2 0 01-2-2V5a2 2 0 012-2h8"
+            stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    Logout
+  </button>
+
+  <div class="flash-message" id="welcome-msg"></div>
+
+  <div class="dashboard-panel">
+    <button onclick="window.location.href='fd_booking.html'">FD Booking</button>
+    <button onclick="window.location.href='fd_details.html'">FD Details</button>
+    <button onclick="window.location.href='fd_list.html'">FD List</button>
+  </div>
+
+  <script>
+    window.onload = () => {
+      const justLoggedIn = sessionStorage.getItem("justLoggedIn");
+
+      if (justLoggedIn === "true") {
+        // Show welcome only once after login
+        const msg = document.getElementById("welcome-msg");
+        msg.style.display = "inline-block";
+        msg.innerHTML = `Welcome<br>You are successfully logged in`;
+
+        // Clear the flag so it won't show again on back navigation
+        sessionStorage.removeItem("justLoggedIn");
+
+        // Auto-hide after 3s
+        setTimeout(() => { msg.style.display = "none"; }, 3000);
+      } else {
+        // Ensure hidden when not just logged in
+        document.getElementById("welcome-msg").style.display = "none";
+      }
+    };
+  </script>
+</body>
+</html>

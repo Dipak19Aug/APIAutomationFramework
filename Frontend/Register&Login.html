@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Register & Login</title>
+  <link rel="stylesheet" href="assets/style.css">
+  <style>
+    body {
+      background-image: url("images/fixedDeposit.webp"); /* ✅ apna image path */
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center;
+      font-family: 'Segoe UI', Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      color: #fff;
+    }
+
+    /* ✅ Glass effect card */
+    .card {
+      background: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(6px);
+      padding: 40px;
+      border-radius: 12px;
+      text-align: center;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.5);
+      width: 320px;
+    }
+
+    .card h2 {
+      margin-bottom: 20px;
+      font-size: 24px;
+      letter-spacing: 1px;
+    }
+
+    /* ✅ Stylish buttons */
+    .card button {
+      background: linear-gradient(135deg, #007bff, #00c6ff);
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      margin: 10px 0;
+      font-size: 16px;
+      cursor: pointer;
+      border-radius: 6px;
+      width: 100%;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .card button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+    }
+
+    /* ✅ Footer reserve line */
+    footer {
+      position: fixed;
+      bottom: 8px;
+      width: 100%;
+      text-align: center;
+      font-size: 12px;
+      color: #ddd;
+      font-style: italic;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h2>Welcome to Smart Deposit</h2>
+    <button onclick="window.location.href='register.html'">Register</button>
+    <button onclick="window.location.href='login.html'">Login</button>
+    <button onclick="window.location.href='create_password.html'">Create Password</button>
+  </div>
+
+  <!-- ✅ Footer reserve line -->
+  <footer>
+    © This website is personal property of Dipak Ghadge. All rights reserved.
+  </footer>
+</body>
+</html>

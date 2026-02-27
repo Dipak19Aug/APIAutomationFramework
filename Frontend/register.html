@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Register</title>
+  <link rel="stylesheet" href="assets/style.css">
+  <style>
+    body {
+      background-image: url("images/Registerbg.jpg");
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center;
+      font-family: Arial, sans-serif;
+      color: #fff;
+      padding: 0;
+      margin: 0;
+    }
+
+    .back-btn {
+      all: unset;
+      position: fixed;
+      top: 12px;
+      left: 12px;
+      z-index: 9999;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #0d6efd;
+      color: #fff;
+      padding: 6px 10px;
+      border-radius: 16px;
+      font-size: 12px;
+      line-height: 1;
+      cursor: pointer;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+      user-select: none;
+    }
+    .back-btn:hover { background: #0b5ed7; }
+    .back-icon { width: 12px; height: 12px; display: inline-block; }
+
+    h2 {
+      text-align: center;
+      margin: 60px 0 20px 0;
+    }
+
+    form {
+      background-color: rgba(0, 0, 0, 0.6);
+      padding: 20px;
+      border-radius: 8px;
+      width: 90%;
+      max-width: 500px;
+      margin: 0 auto 20px auto;
+    }
+
+    input, select, button {
+      display: block;
+      margin: 10px auto;
+      padding: 10px;
+      width: 90%;
+      border-radius: 4px;
+      border: none;
+      font-size: 14px;
+    }
+
+    #btn-register-submit {
+      background-color: #007bff;
+      color: white;
+      cursor: pointer;
+    }
+    #btn-register-submit:hover { background-color: #0056b3; }
+
+    #watermark-note {
+      font-size: 12px;
+      color: #ddd;
+      margin-top: 8px;
+      font-style: italic;
+      text-align: center;
+    }
+
+    #msg-register, #error {
+      text-align: center;
+      margin-top: 10px;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <!-- ✅ Back button with class + text (for ClassName, LinkText, PartialLinkText) -->
+  <button class="back-btn" id="backButton" name="backButton" onclick="window.location.href='Register&Login.html'">
+    <svg class="back-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <path d="M15 18l-6-6 6-6" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    Back
+  </button>
+
+  <h2 id="registerTitle">Register</h2>
+
+  <form id="form-register" name="registerForm" class="register-form">
+    <!-- ✅ ID + Name + Placeholder (By.id, By.name, By.cssSelector, By.xpath) -->
+    <input id="firstname" name="firstname" placeholder="First name" required />
+    <input id="username" name="username" placeholder="Username" required />
+    <input id="middleName" name="middleName" placeholder="Middle name" />
+    <input id="sirname" name="sirname" placeholder="Surname" />
+    <input id="pan" name="pan" placeholder="PAN" required />
+    <input id="aadhaar" name="aadhaar" placeholder="Aadhaar" required />
+    <input id="mobile" name="mobile" placeholder="Mobile" required />
+    <input id="dob" name="dob" type="date" placeholder="DOB" required />
+    <select id="gender" name="gender" class="gender-select">
+      <option value="male">male</option>
+      <option value="female">female</option>
+      <option value="other">other</option>
+    </select>
+    <!-- ✅ Button with ID, Name, Text (By.id, By.name, By.cssSelector, By.xpath, By.linkText) -->
+    <button id="btn-register-submit" name="registerBtn" type="button" class="submit-btn">Register</button>
+  </form>
+
+  <!-- ✅ Divs with IDs and classes for practice -->
+  <div id="msg-register" class="message-box"></div>
+  <div id="watermark-note" class="note-box">Note: Application ID is shown here only for testing purposes. In production, it will be sent via SMS.</div>
+  <div id="error" class="error-box"></div>
+
+  <script>
+    const api = "http://localhost:3000/api/users/register";
+
+    // ✅ Using different locator styles in JS for practice
+    document.querySelector("#btn-register-submit").onclick = async () => {
+      const payload = {
+        // By.id
+        firstname: document.getElementById("firstname").value,
+        // By.name
+        username: document.getElementsByName("username")[0].value,
+        // By.className
+        middleName: document.getElementsByClassName("register-form")[0]
+                        .querySelector("#middleName").value,
+        // By.tagName
+        sirname: document.getElementsByTagName("input")[3].value,
+        // By.cssSelector
+        pan: document.querySelector("input[placeholder='PAN']").value,
+        // By.xpath (simulated via querySelector for practice)
+        aadhaar: document.querySelector("input[name='aadhaar']").value,
+        mobile: document.querySelector("input[id='mobile']").value,
+        dob: document.querySelector("input[type='date']").value,
+        gender: document.querySelector("select.gender-select").value
+      };
+
+      console.log("Payload being sent:", payload);
+
+      try {
+        const res = await fetch(api, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+
+        const data = await res.json();
+        console.log("Response received:", data);
+
+        if (!res.ok || data.success === false) {
+          document.querySelector(".error-box").innerText = JSON.stringify(data);
+          document.querySelector(".message-box").innerText = "";
+          return;
+        }
+
+        document.querySelector(".message-box").innerText =
+          `Registered: userId=${data.userId}, applicationId=${data.applicationId}`;
+
+        document.forms["registerForm"].reset();
+
+        localStorage.setItem('userId', data.userId);
+        localStorage.setItem('applicationId', data.applicationId);
+        localStorage.setItem('username', payload.username);
+      } catch (e) {
+        console.error("Error occurred:", e);
+        document.querySelector(".error-box").innerText = e.message;
+      }
+    };
+  </script>
+</body>
+</html>

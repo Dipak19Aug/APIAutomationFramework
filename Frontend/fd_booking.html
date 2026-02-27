@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>FD Booking</title>
+  <link rel="stylesheet" href="assets/style.css">
+  <style>
+    body {
+      background-image: url("images/BookFD.jpg"); /* ✅ apna image path */
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center;
+      font-family: 'Segoe UI', Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      color: #fff;
+      text-align: center;
+    }
+
+    nav {
+      margin: 20px;
+    }
+    nav a {
+      color: #fff;
+      margin: 0 10px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    nav a:hover { text-decoration: underline; }
+
+    .container-flex {
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      gap: 30px;
+      margin-top: 20px;
+      flex-wrap: wrap;
+    }
+
+    .card {
+      background: rgba(0,0,0,0.6);
+      backdrop-filter: blur(6px);
+      padding: 20px;
+      border-radius: 12px;
+      width: 90%;
+      max-width: 450px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.5);
+      text-align: center;
+    }
+
+    .card h2 { margin-bottom: 15px; }
+
+    .card input, .card select {
+      display: block;
+      margin: 10px auto;
+      padding: 10px;
+      width: 90%;
+      border-radius: 6px;
+      border: none;
+      font-size: 14px;
+    }
+
+    .card button {
+      background: linear-gradient(135deg, #007bff, #00c6ff);
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      margin-top: 15px;
+      font-size: 16px;
+      cursor: pointer;
+      border-radius: 6px;
+      width: 100%;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .card button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+    }
+
+    #msg-fd, #error {
+      margin-top: 12px;
+      font-size: 14px;
+      color: #fff;
+    }
+    #error { color: #ffb3b3; }
+  </style>
+</head>
+<body>
+  <h1 id="heading-fd" class="page-title">FD Booking & Calculator</h1>
+
+  <nav>
+    <a id="link-home" name="homeLink" href="dashboard.html">Home</a>
+    <a id="link-fd-list" name="fdListLink" href="fd_list.html">FD List</a>
+    <a id="link-fd-details" name="fdDetailsLink" href="fd_details.html">FD Details</a>
+  </nav>
+
+  <div class="container-flex">
+    <!-- FD Calculator -->
+    <section id="fd-calculator" class="card calculator-card">
+      <h2 id="calcTitle">FD Calculator</h2>
+      <input id="calc-amount" name="amount" class="calc-input" type="number" placeholder="Amount" />
+      <input id="calc-tenure" name="tenure" class="calc-input" type="number" placeholder="Tenure (months)" />
+      <input id="calc-rate" name="rate" class="calc-input" type="number" placeholder="Interest Rate (%)" />
+      <button id="btn-calc" name="calcBtn" class="calc-btn">Calculate</button>
+      <input id="calc-result" class="calc-result" type="text" readonly placeholder="Maturity Value will appear here" />
+    </section>
+
+    <!-- FD Booking -->
+    <section id="fd-booking" class="card booking-card">
+      <h2 id="bookingTitle">Book FD</h2>
+      <form id="form-fd" name="fdForm" class="fd-form">
+        <select id="depositType" name="depositType" class="fd-select">
+          <option value="Fixed">Fixed</option>
+          <option value="Recurring">Recurring</option>
+        </select>
+        <input id="fd-amount" name="amount" class="fd-input" type="number" placeholder="Enter Amount" />
+        <input id="fd-tenure" name="durationMonths" class="fd-input" type="number" placeholder="Enter Tenure (months)" />
+        <input id="nominee_firstname" name="nominee_firstname" class="fd-input" placeholder="Nominee Firstname" />
+        <input id="nominee_lastname" name="nominee_lastname" class="fd-input" placeholder="Nominee Lastname" />
+        <input id="nominee_address" name="nominee_address" class="fd-input" placeholder="Nominee Address" />
+        <select id="nominee_relationship" name="nominee_relationship" class="fd-select">
+          <option value="">Select Relationship</option>
+          <option value="Father">Father</option>
+          <option value="Mother">Mother</option>
+          <option value="Spouse">Spouse</option>
+          <option value="Brother">Brother</option>
+          <option value="Sister">Sister</option>
+          <option value="Son">Son</option>
+          <option value="Daughter">Daughter</option>
+          <option value="Other">Other</option>
+        </select>
+        <button id="btn-bookfd" name="bookBtn" type="button" class="submit-btn">Create FD</button>
+      </form>
+      <div id="msg-fd" class="message-box"></div>
+      <div id="error" class="error-box"></div>
+    </section>
+  </div>
+
+  <script>
+    // ✅ FD Calculator
+    document.querySelector("#btn-calc").onclick = () => {
+      const amt = parseFloat(document.getElementById("calc-amount").value || 0);
+      const months = parseInt(document.getElementsByName("tenure")[0].value || 0);
+      const rate = parseFloat(document.querySelector("input[name='rate']").value || 0);
+      const maturity = amt + (amt * rate * months / 1200);
+      document.getElementById("calc-result").value = "Maturity Value: " + maturity.toFixed(2);
+    };
+
+    // ✅ FD Booking
+    const createApi = "http://localhost:3000/api/deposits/create";
+
+    // Inline error when Recurring selected
+    document.getElementById("depositType").addEventListener("change", function() {
+      if (this.value === "Recurring") {
+        document.getElementById("error").innerText =
+          "Recurring deposit is in under development, Please select Fixed Deposit type.";
+      } else {
+        document.getElementById("error").innerText = "";
+      }
+    });
+
+    document.querySelector("#btn-bookfd").onclick = async () => {
+      const token = localStorage.getItem('token');
+      if (!token) { 
+        document.querySelector(".error-box").innerText = "Please login first"; 
+        return; 
+      }
+
+      const depositType = document.getElementById("depositType").value;
+      if (depositType === "Recurring") {
+        document.getElementById("error").innerText =
+          "Recurring deposit is in under development, Please select Fixed Deposit type.";
+        return;
+      }
+
+      const payload = {
+        depositType,
+        amount: Number(document.getElementById("fd-amount").value),
+        durationMonths: Number(document.getElementById("fd-tenure").value),
+        nominee_firstname: document.getElementById("nominee_firstname").value,
+        nominee_lastname: document.getElementById("nominee_lastname").value,
+        nominee_address: document.getElementById("nominee_address").value,
+        nominee_relationship: document.getElementById("nominee_relationship").value
+      };
+
+      console.log("FD Payload:", payload);
+
+      try {
+        const res = await fetch(createApi, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`
+          },
+          body: JSON.stringify(payload)
+        });
+
+        const data = await res.json();
+        console.log("FD Response:", data);
+
+        if (!res.ok || data.success === false) {
+          document.querySelector(".error-box").innerText = JSON.stringify(data);
+          document.querySelector(".message-box").innerText = "";
+          return;
+        }
+
+        alert("FD booked Successfully");
+        document.querySelector(".message-box").innerText = `${data.message} | FDID: ${data.fdId}`;
+        document.forms["fdForm"].reset();
+
+      } catch (e) {
+        document.querySelector(".error-box").innerText = e.message;
+      }
+    };
+  </script>
+</body>
+</html>
