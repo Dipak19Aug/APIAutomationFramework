@@ -1,3 +1,23 @@
 /target/
 /test-output/
 /logs/
+
+# Node
+node_modules/
+
+# Maven
+target/
+
+# Logs
+logs/
+*.log
+
+# Environment
+.env
+
+# IDE Files
+.idea/
+.vscode/
+
+# Temp
+*.tmp
