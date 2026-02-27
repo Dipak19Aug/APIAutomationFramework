@@ -4,9 +4,7 @@ on:
   push:
     branches:
       - master
-  schedule:
-    - cron: "*/45 * * * *"
-
+  
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -29,7 +27,7 @@ jobs:
 
       - name: Clone Backend Repository
         run: |
-          git clone https://github.com/Dipak19Aug/SmartDepositAPI.git
+          git clone https://x-access-token:${{ secrets.PAT_TOKEN }}@github.com/Dipak19Aug/SmartDepositAPI.git
           cd SmartDepositAPI
           npm install
 
